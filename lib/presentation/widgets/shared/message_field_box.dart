@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MessageFieldBox extends StatefulWidget {
-  const MessageFieldBox({super.key});
+class MessageFieldBox extends StatelessWidget {
+  final ValueChanged<String> onValue;
 
-  @override
-  State<MessageFieldBox> createState() => _MessageFieldBoxState();
-}
+  const MessageFieldBox({
+    super.key,
+    required this.onValue,
+  });
 
-class _MessageFieldBoxState extends State<MessageFieldBox> {
   @override
   Widget build(BuildContext context) {
     final textController = TextEditingController();
@@ -26,8 +26,8 @@ class _MessageFieldBoxState extends State<MessageFieldBox> {
       suffixIcon: IconButton(
         onPressed: () {
           final textValue = textController.value.text;
-          print('Valor de la caja de texto $textValue');
           textController.clear();
+          onValue(textValue);
         },
         icon: const Icon(Icons.send),
       ),
@@ -41,9 +41,9 @@ class _MessageFieldBoxState extends State<MessageFieldBox> {
       controller: textController,
       decoration: inputDecoration,
       onFieldSubmitted: (value) {
-        print('Submit value $value');
         textController.clear();
         focusNode.requestFocus();
+        onValue(value);
       },
     );
   }
